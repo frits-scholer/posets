@@ -46,7 +46,7 @@ bool comp(const crabc& a, const crabc& b) {
 }
 
 ostream& operator << (ostream& out, const crabc& c) {
-  return out << setprecision(10) << c.first << ", " << c.second;
+  return out << setprecision(10) << setw(2) << c.first << ", " <<  setw(12) << c.second;
 }
 
 int main() {
@@ -81,8 +81,8 @@ clock_t tm=clock();
 	}
     }
   }
-  for_each(all(P),[](const crabc& c){cout << c << endl;});
-  cout << endl;
+  //for_each(all(P),[](const crabc& c){cout << c << endl;});
+  //cout << endl;
   vector<vector<crabc> > C;
   for (auto it=begin(P);it != end(P);++it) {
     bool failure=true;
@@ -105,6 +105,7 @@ clock_t tm=clock();
   vector<vector<Uint>> ChainMerge(P.size(), vector<Uint>(C.size()));
   int j=0;
   for_each(all(P), [&](const crabc& e){
+      cout << e << "\t";
       for (size_t i=0;i<C.size();i++) {
 	ChainMerge[j][i]=distance(begin(C[i]), lower_bound(all(C[i]), e, comp));
 	cout << ChainMerge[j][i] << " ";
