@@ -5,7 +5,7 @@ decomp1.txt is the output of poset1.cpp
 	    chain decomposition
 	    output of chainmerge datastructure
 proposed changes
-fix zodat de index in chainmerge het eerste element groter dan x in de chain is
+fix such that the index in chainmerge is of the first element greater than x
 list chain indices
 combine list with chainmerge structure - vertical index
 list chain nr at top
