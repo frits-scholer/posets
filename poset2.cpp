@@ -51,7 +51,6 @@ ostream& operator << (ostream& out, const crabc& c) {
 
 int main() {
   Uint Lmax = 100;
-clock_t tm=clock();
   vector<Uint> rads(Lmax,1);
   fill_radical(rads);
   vector<radic> srads(Lmax-1);
@@ -95,31 +94,23 @@ clock_t tm=clock();
     }
       if (failure) C.push_back(vector<crabc>(1,*it));//increase width
   }
-
-  for (size_t i=0;i<C.size();++i) {
-    cout << i << "\n";
-    int j=0;
-    for_each(all(C[i]), [&](const crabc& c){cout << "\t" << j++ << "\t" << c << endl;});
-  }
-  cout << "\nPoset width: " << C.size() << endl;
-
   vector<vector<Uint>> ChainMerge(P.size(), vector<Uint>(C.size()));
-  int j=0;
+  size_t j=0;
   for_each(all(P), [&](const crabc& e){
-      cout << e << "\t";
       for (size_t i=0;i<C.size();i++) {
 	ChainMerge[j][i]=distance(begin(C[i]), upper_bound(all(C[i]), e, comp))+1;
-	cout << ChainMerge[j][i] << " ";
       }
-      /*      for (size_t i=0;i<C.size();i++) {
-	for (size_t k=0;k<C[i].size();k++)
-	if (comp(e,C[i][k]) || e==C[i][k]) {ChainMerge[j][i]=k+1;break;}
-	cout << ChainMerge[j][i] << " ";
-	}*/
-      cout << endl;
       j++;
     });
-
-tm = clock()-tm;
-cerr << (double) tm/CLOCKS_PER_SEC << " s" << endl;
+ size_t i;
+ while (true) {
+   cout << "Enter 2 numbers between 1 and " << P.size() << ": ";
+   cin >> i >> j;
+   if (i<1 || i>P.size()) break;
+   auto it1=begin(P);
+   auto it2=begin(P);
+   advance(it1,i-1);
+   advance(it2,j-1);
+   cout << *it1 << "\t" << *it2 << endl;
+ }
 }
