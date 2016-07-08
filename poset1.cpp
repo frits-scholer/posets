@@ -108,8 +108,7 @@ clock_t tm=clock();
   for_each(all(P), [&](const crabc& e){
       cout << e << "\t";
       for (size_t i=0;i<C.size();i++) {
-	auto ub = upper_bound(all(C[i]), e, comp);
-	ChainMerge[j][i]= (ub==end(C[i])?0:distance(begin(C[i]), ub)+1);
+	ChainMerge[j][i]= distance(begin(C[i]), upper_bound(all(C[i]), e, comp))+1;
 	cout << ChainMerge[j][i] << " ";
       }
       cout << endl;

@@ -17,7 +17,7 @@ using namespace std;
 typedef long Uint;
 typedef pair<Uint, double> crabc;
 typedef pair<Uint, Uint> radic;
-
+typedef vector<vector<Uint>>::const_iterator chmrg_it;
 inline bool even(Uint n) {return !(n&1);}
 inline bool odd(Uint n) {return n&1;}
 
@@ -47,6 +47,27 @@ bool comp(const crabc& a, const crabc& b) {
 
 ostream& operator << (ostream& out, const crabc& c) {
   return out << setprecision(10) << setw(2) << c.first << ", " <<  setw(12) << c.second;
+}
+void print_chainmerge(chmrg_it iv) {
+  for (auto n : *iv) cout << n << " ";
+  cout << endl;
+}
+
+char partial_relation(chmrg_it iv1, chmrg_it iv2) {
+  char cur_rel = '=';
+  for (size_t i=0;i<(*iv1).size();i++) {
+    if ((*iv1)[i] < (*iv2)[i]) {
+      if (cur_rel == '=') cur_rel = '<';
+      if (cur_rel == '>') return '~';
+    }
+    else {
+      if ((*iv1)[i] > (*iv2)[i]) {
+	if (cur_rel == '=') cur_rel = '>';
+	if (cur_rel == '<') return '~';
+      }
+    }
+  }
+  return cur_rel;
 }
 
 int main() {
@@ -98,8 +119,7 @@ int main() {
   size_t j=0;
   for_each(all(P), [&](const crabc& e){
       for (size_t i=0;i<C.size();i++) {
-	auto ub = upper_bound(all(C[i]), e, comp);
-	ChainMerge[j][i]= (ub==end(C[i])?0:distance(begin(C[i]), ub)+1);
+	ChainMerge[j][i]= distance(begin(C[i]), upper_bound(all(C[i]), e, comp))+1;
       }
       j++;
     });
@@ -112,6 +132,11 @@ int main() {
    auto it2=begin(P);
    advance(it1,i-1);
    advance(it2,j-1);
-   cout << *it1 << "\t" << *it2 << endl;
+   cout << *it1 << "\t";
+   //print_chainmerge(begin(ChainMerge)+i-1) ;
+   cout << partial_relation(begin(ChainMerge)+i-1, begin(ChainMerge)+j-1) << "\t";
+   cout << *it2 << endl;
+   //print_chainmerge(begin(ChainMerge)+j-1) ;
+
  }
 }
