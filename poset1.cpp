@@ -98,7 +98,7 @@ clock_t tm=clock();
 
   for (size_t i=0;i<C.size();++i) {
     cout << i << "\n";
-    int j=0;
+    int j=1;
     for_each(all(C[i]), [&](const crabc& c){cout << "\t" << j++ << "\t" << c << endl;});
   }
   cout << "\nPoset width: " << C.size() << endl;
@@ -108,14 +108,10 @@ clock_t tm=clock();
   for_each(all(P), [&](const crabc& e){
       cout << e << "\t";
       for (size_t i=0;i<C.size();i++) {
-	ChainMerge[j][i]=distance(begin(C[i]), upper_bound(all(C[i]), e, comp))+1;
+	auto ub = upper_bound(all(C[i]), e, comp);
+	ChainMerge[j][i]= (ub==end(C[i])?0:distance(begin(C[i]), ub)+1);
 	cout << ChainMerge[j][i] << " ";
       }
-      /*      for (size_t i=0;i<C.size();i++) {
-	for (size_t k=0;k<C[i].size();k++)
-	if (comp(e,C[i][k]) || e==C[i][k]) {ChainMerge[j][i]=k+1;break;}
-	cout << ChainMerge[j][i] << " ";
-	}*/
       cout << endl;
       j++;
     });
